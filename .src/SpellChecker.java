@@ -13,6 +13,7 @@ public class SpellChecker {
       // TODO: Complete the body of this method, as necessary.
       inputReader.close();  // DO NOT MODIFY - must be the last line of this method!
     }
-  
-    // You can of course write other methods as well.
+
+
+
   }
