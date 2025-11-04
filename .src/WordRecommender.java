@@ -64,6 +64,7 @@ public class WordRecommender {
 
         int wordLen = word.length();
         ArrayList<String> filter = new ArrayList<>();
+        ArrayList<String> suggestions = new ArrayList<>();
         HashMap<Integer, ArrayList<String>> stringLen = getStringLen(this.dictionaryFile);
 
         // 1. find candidate word with length of accepted tolerance
@@ -82,18 +83,33 @@ public class WordRecommender {
         }
 
         // 3. rank the topN candidates based on left-right similarity
-
-        // compare getSimilarity(), set a int highSimilarity, than if the next element has > highSimilarity
-            // ArrayList.add(0, element)
-
-
-
+        double highSimilarity = 0.0;
         for (String s : filter) {
-            System.out.println(s);
+            double similarity = getSimilarity(s, word);
+            System.out.println("the similarity is " + similarity);
+            if (similarity >= highSimilarity) {
+                System.out.println("IN THE IF STATEMENT");
+                highSimilarity = similarity;
+                System.out.println("Now high similarity: " + similarity);
+                suggestions.add(0, s);
+            }
         }
 
+        // TESTING
+        for (String s : suggestions) {
+            System.out.println(s);
+            System.out.println("SIMILARITY IS: " + getSimilarity(s, word));
+        }
 
-        return null;
+        suggestions = new ArrayList<>(suggestions.subList(0, topN));
+
+        // TESTING
+        for (String s : suggestions) {
+            System.out.println(s);
+
+        }
+
+        return suggestions;
     }
 
     /*
@@ -147,7 +163,7 @@ public class WordRecommender {
             }
             i++;
         }
-        System.out.println("the left similarity is " + result);
+        //System.out.println("the left similarity is " + result);
         return result;
     }
 
@@ -180,7 +196,7 @@ public class WordRecommender {
             i++;
         }
 
-        System.out.println("the right similarity is " + result);
+        //System.out.println("the right similarity is " + result);
         return result;
     }
 
@@ -219,7 +235,7 @@ public class WordRecommender {
 //        FileInputStream file = new FileInputStream("engDictionary.txt");
         WordRecommender recommender = new WordRecommender("engDictionary.txt");
         System.out.println("Hi!");
-        ArrayList<String> suggestions = recommender.getWordSuggestions("tenny", 1, 0.5, 4);
+        ArrayList<String> suggestions = recommender.getWordSuggestions("ewook", 1, 0.5, 4);
         //HashMap<Integer, ArrayList<String>> stringLen = recommender.getStringLen("engDictionary.txt");
         //System.out.println(stringLen.get(1).size());
         //double common = recommender.getCommon("te", "yet");
