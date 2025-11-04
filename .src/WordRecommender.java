@@ -48,7 +48,25 @@ public class WordRecommender {
       return (left + right) / 2;
     }
 
+    /*
+    Return a double, showing the percentage of characters in common between String word1 and word2
+    |aSet AND bSet| / |aSet OR bSet|
+     */
+    public double getCommon(String word1, String word2) {
+        HashSet<String> set1 = new HashSet<>();
+        HashSet<String> set2 = new HashSet<>();
+        for (char i : word1.toCharArray()) {
+            set1.add(String.valueOf(i));
+        }
+        for (char i : word2.toCharArray()) {
+            set2.add(String.valueOf(i));
+        }
 
+        int intersection = setIntersection(set1, set2);
+        int union = setUnion(set1, set2);
+        System.out.println("Intersection: " + intersection + " Union: " + union);
+        return intersection / union;
+    }
 
     /*
     Return an ArrayList consisting of topN number of word suggestions.
@@ -131,8 +149,34 @@ public class WordRecommender {
         return result;
     }
 
+    /*
+    Return the number of characters set1 and set2 share in common
+    Input: HashSet set1
+           Hashset set2
+    Output: int # of characters
+     */
+    public int setIntersection(HashSet<String> set1, HashSet<String> set2) {
+        int result = 0;
+        for (String word : set1) {
+            if (set2.contains(word)) {
+                result++;
+            }
+        }
+        return result;
+    }
 
-
+    /*
+    Return the number of characters contained in either set1 or set2
+    Input: HashSet set1
+           Hashset set2
+    Output: int # of characters
+    */
+    public int setUnion(HashSet<String> set1, HashSet<String> set2) {
+        HashSet<String> union = new HashSet<>();
+        union.addAll(set1);
+        union.addAll(set2);
+        return union.size();
+    }
 
 
 
@@ -140,7 +184,7 @@ public class WordRecommender {
 //        FileInputStream file = new FileInputStream("engDictionary.txt");
         WordRecommender recommender = new WordRecommender("engDictionary.txt");
         System.out.println("Hi!");
-        double similarity = recommender.getSimilarity("aghast", "gross");
-        System.out.println(similarity);
+        double common = recommender.getCommon("committee", "comet");
+        System.out.println(common);
     }
   }
