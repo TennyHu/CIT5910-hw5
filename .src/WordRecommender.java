@@ -179,7 +179,6 @@ public class WordRecommender {
     }
 
 
-
     public static void main(String[] args) throws IOException {
 //        FileInputStream file = new FileInputStream("engDictionary.txt");
         WordRecommender recommender = new WordRecommender("engDictionary.txt");
