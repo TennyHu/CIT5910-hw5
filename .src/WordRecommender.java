@@ -65,7 +65,7 @@ public class WordRecommender {
         int intersection = setIntersection(set1, set2);
         int union = setUnion(set1, set2);
         System.out.println("Intersection: " + intersection + " Union: " + union);
-        return intersection / union;
+        return (double)intersection / union;
     }
 
     /*
@@ -184,7 +184,7 @@ public class WordRecommender {
 //        FileInputStream file = new FileInputStream("engDictionary.txt");
         WordRecommender recommender = new WordRecommender("engDictionary.txt");
         System.out.println("Hi!");
-        double common = recommender.getCommon("committee", "comet");
+        double common = recommender.getCommon("gardener", "nerdier");
         System.out.println(common);
     }
   }
