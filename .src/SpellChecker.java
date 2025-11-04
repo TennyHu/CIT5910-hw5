@@ -108,7 +108,10 @@ public class SpellChecker {
 
     // Method to check if word is in the dictionary - returns true if valid
     private boolean validWord(String word, HashSet dictionary) {
+
         dictionary.contains(word);
+
+        return false;
     }
 
     // TODO: complete typoHandling method -> state word is misspelled and call to WordRecommender
@@ -117,7 +120,7 @@ public class SpellChecker {
         // Call to wordRecommender
         // Asks user how to deal with the typo
         // Returns word to add to the file
-
+        return "";
     }
 
     public static void main(String[] args) throws FileNotFoundException {
