@@ -1,12 +1,17 @@
-out/
+# Compiled class files
 *.class
+
+# Build directories
+out/
+target/
+build/
 
 # IntelliJ IDEA
 .idea/
 *.iml
 
-# macOS
+# Mac
 .DS_Store
 
-*.jar
-*.war
+# Windows
+Thumbs.db
