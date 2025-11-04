@@ -1,0 +1,12 @@
+out/
+*.class
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# macOS
+.DS_Store
+
+*.jar
+*.war
