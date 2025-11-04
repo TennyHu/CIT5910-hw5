@@ -9,31 +9,8 @@ import java.util.Scanner;
 public class WordRecommender {
 
     public WordRecommender(String dictionaryFile) throws FileNotFoundException {
-        // store the length - [string1, string2...] pair
-        HashMap<Integer, ArrayList<String>> stringLen = new HashMap<>();
-
-        FileInputStream dictionary = new FileInputStream(dictionaryFile);
-        Scanner scanner = new Scanner(dictionary);
-        while (scanner.hasNextLine()) {
-            String word = scanner.nextLine();
-            int len = word.length();
-            if (stringLen.containsKey(len)) {   // this string length key already been added
-                stringLen.get(len).add(word);
-            } else {    // create a new ArrayList and add to map
-                ArrayList<String> list = new ArrayList<>();
-                list.add(word);
-                stringLen.put(len, list);
-            }
-        }
-
-        getStringLen(stringLen);
-
-        scanner.close();
-
-        //System.out.println(stringLen.get(20));
-
+        getStringLen(dictionaryFile);
     }
-
 
 
     /*
@@ -86,10 +63,10 @@ public class WordRecommender {
       // TODO: change this!
         int wordLen = word.length();
         ArrayList<String> suggestions = new ArrayList<>();
-        HashMap<Integer, ArrayList<String>> stringLen =
+        //HashMap<Integer, ArrayList<String>> stringLen =
         // 1. find candidate word with length of accepted tolerance
         for (int i = wordLen - tolerance; i <= wordLen + tolerance; i++) {
-            if (stringLen)
+//            if (stringLen)
         }
 
 
@@ -98,10 +75,25 @@ public class WordRecommender {
 
     /*
     Return the HashMap containing String length - ArrayList<String> pairs
-    Input: HashMap<Integer, ArrayList<String>>
+    Input: String fileName, the file containing dictionary
     Output: HashMap<Integer, ArrayList<String>>
      */
-    public HashMap<Integer, ArrayList<String>> getStringLen(HashMap<Integer, ArrayList<String>> stringLen) {
+    public HashMap<Integer, ArrayList<String>> getStringLen(String fileName) throws FileNotFoundException {
+        HashMap<Integer, ArrayList<String>> stringLen = new HashMap<>();
+        FileInputStream dictionary = new FileInputStream(fileName);
+        Scanner scanner = new Scanner(dictionary);
+        while (scanner.hasNextLine()) {
+            String word = scanner.nextLine();
+            int len = word.length();
+            if (stringLen.containsKey(len)) {   // this string length key already been added
+                stringLen.get(len).add(word);
+            } else {    // create a new ArrayList and add to map
+                ArrayList<String> list = new ArrayList<>();
+                list.add(word);
+                stringLen.put(len, list);
+            }
+        }
+        scanner.close();
         return stringLen;
     }
 
@@ -204,6 +196,8 @@ public class WordRecommender {
 //        FileInputStream file = new FileInputStream("engDictionary.txt");
         WordRecommender recommender = new WordRecommender("engDictionary.txt");
         System.out.println("Hi!");
+        HashMap<Integer, ArrayList<String>> stringLen = recommender.getStringLen("engDictionary.txt");
+        System.out.println(stringLen.get(1).size());
         double common = recommender.getCommon("gardener", "nerdier");
         System.out.println(common);
     }
