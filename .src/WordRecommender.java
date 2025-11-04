@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class WordRecommender {
@@ -36,8 +37,8 @@ public class WordRecommender {
     /*
     Return a double, consisting the similarity (commonPercent) for word1 and word2
     (left align + right align) / 2 = similarity
-    Input: String word1
-           String word2
+    Input: String word1, input word
+           String word2, word suggestion
     Output: double, the % of similarity between input words
      */
     public double getSimilarity(String word1, String word2) {
@@ -68,28 +69,78 @@ public class WordRecommender {
 
     /*
     Return a double, consisting the left similarity (commonPercent) for word1 and word2
-    Input: String word1
-           String word2
+    Input: String word1, input word
+           String word2, word suggestion
     Output: double, the % of left similarity between input words
      */
     public double getLeftSimilarity(String word1, String word2) {
+        double result = 0.0;
+        ArrayList<Character> list1 = new ArrayList<>();
+        ArrayList<Character> list2 = new ArrayList<>();
+        char[] array1 = word1.toCharArray();
+        char[] array2 = word2.toCharArray();
 
-        return 0.0;
+        for (int i = 0; i < array1.length; i++) {
+            list1.add(array1[i]);
+        }
+        for (int i = 0; i < array2.length; i++) {
+            list2.add(array2[i]);
+        }
+
+        int i = 0;
+        while (i < list1.size() && i < list2.size()) {
+            if (list1.get(i).equals(list2.get(i))) {
+                result++;
+            }
+            i++;
+        }
+        System.out.println("the left similarity is " + result);
+        return result;
     }
 
 
     /*
     Return a double, consisting the right similarity (commonPercent) for word1 and word2
-    Input: String word1
-           String word2
+    Input: String word1, input word
+           String word2, word suggestion
     Output: double, the % of right similarity between input words
      */
     public double getRightSimilarity(String word1, String word2) {
-        return 0.0;
+        double result = 0.0;
+        ArrayList<Character> list1 = new ArrayList<>();
+        ArrayList<Character> list2 = new ArrayList<>();
+        char[] array1 = word1.toCharArray();
+        char[] array2 = word2.toCharArray();
+
+        for (int i = array1.length - 1; i >= 0; i--) {
+            list1.add(array1[i]);
+        }
+        for (int i = array2.length - 1; i >= 0; i--) {
+            list2.add(array2[i]);
+        }
+
+        int i = 0;
+        while (i < list1.size() && i < list2.size()) {
+            if (list1.get(i).equals(list2.get(i))) {
+                result++;
+            }
+            i++;
+        }
+
+        System.out.println("the right similarity is " + result);
+        return result;
     }
+
+
+
+
+
 
     public static void main(String[] args) throws IOException {
 //        FileInputStream file = new FileInputStream("engDictionary.txt");
         WordRecommender recommender = new WordRecommender("engDictionary.txt");
+        System.out.println("Hi!");
+        double similarity = recommender.getSimilarity("aghast", "gross");
+        System.out.println(similarity);
     }
   }
