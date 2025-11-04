@@ -47,7 +47,6 @@ public class WordRecommender {
 
         int intersection = setIntersection(set1, set2);
         int union = setUnion(set1, set2);
-        System.out.println("Intersection: " + intersection + " Union: " + union);
         return (double)intersection / union;
     }
 
@@ -72,6 +71,17 @@ public class WordRecommender {
                 suggestions.addAll(stringLen.get(i));
             }
         }
+
+        // 2. delete strings not qualified for the common Percent shared
+        for (int i = suggestions.size() - 1; i >= 0; i--) {
+            double commoon = getCommon(suggestions.get(i), word);
+            if (commoon < commonPercent) {
+                suggestions.remove(i);
+            }
+        }
+
+
+
 
         for (String s : suggestions) {
             System.out.println(s);
@@ -207,7 +217,7 @@ public class WordRecommender {
         //ArrayList<String> suggestions = recommender.getWordSuggestions("te", 1, 0.5, 4);
         //HashMap<Integer, ArrayList<String>> stringLen = recommender.getStringLen("engDictionary.txt");
         //System.out.println(stringLen.get(1).size());
-        //double common = recommender.getCommon("gardener", "nerdier");
+        double common = recommender.getCommon("te", "yet");
         //System.out.println(common);
     }
   }
