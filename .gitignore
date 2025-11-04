@@ -1,4 +1,3 @@
-
 out/
 *.class
 
@@ -8,3 +7,6 @@ out/
 
 # macOS
 .DS_Store
+
+*.jar
+*.war
