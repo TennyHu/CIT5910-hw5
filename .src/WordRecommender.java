@@ -83,22 +83,24 @@ public class WordRecommender {
         }
 
         // 3. rank the topN candidates based on left-right similarity
-        double highSimilarity = 0.0;
         for (String s : filter) {
             double similarity = getSimilarity(s, word);
-            System.out.println("the similarity is " + similarity);
-            if (similarity >= highSimilarity) {
-                System.out.println("IN THE IF STATEMENT");
-                highSimilarity = similarity;
-                System.out.println("Now high similarity: " + similarity);
-                suggestions.add(0, s);
+            int insertIndex = 0;
+            for (int i = 0; i < suggestions.size(); i++) {
+                if (getSimilarity(suggestions.get(i), word) >= similarity) { // move the smaller similarity to the back
+                    insertIndex = i + 1;
+                } else {    // when the current element in suggestions has smaller similarity
+                    break;  // append this s word to the front of suggestions
+                }
             }
+            suggestions.add(insertIndex, s);
         }
+
 
         // TESTING
         for (String s : suggestions) {
             System.out.println(s);
-            System.out.println("SIMILARITY IS: " + getSimilarity(s, word));
+            //System.out.println("SIMILARITY IS: " + getSimilarity(s, word));
         }
 
         suggestions = new ArrayList<>(suggestions.subList(0, topN));
@@ -106,7 +108,6 @@ public class WordRecommender {
         // TESTING
         for (String s : suggestions) {
             System.out.println(s);
-
         }
 
         return suggestions;
@@ -235,7 +236,7 @@ public class WordRecommender {
 //        FileInputStream file = new FileInputStream("engDictionary.txt");
         WordRecommender recommender = new WordRecommender("engDictionary.txt");
         System.out.println("Hi!");
-        ArrayList<String> suggestions = recommender.getWordSuggestions("ewook", 1, 0.5, 4);
+        ArrayList<String> suggestions = recommender.getWordSuggestions("automagically", 1, 0.5, 4);
         //HashMap<Integer, ArrayList<String>> stringLen = recommender.getStringLen("engDictionary.txt");
         //System.out.println(stringLen.get(1).size());
         //double common = recommender.getCommon("te", "yet");
