@@ -1,8 +1,33 @@
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
 
 public class WordRecommender {
 
-    public WordRecommender(String dictionaryFile) {
+    public WordRecommender(String dictionaryFile) throws FileNotFoundException {
+        // store the length - [string1, string2...] pair
+        HashMap<Integer, ArrayList<String>> stringLen = new HashMap<>();
+
+        FileInputStream dictionary = new FileInputStream(dictionaryFile);
+        Scanner scanner = new Scanner(dictionary);
+        while (scanner.hasNextLine()) {
+            String word = scanner.nextLine();
+            int len = word.length();
+            if (stringLen.containsKey(len)) {   // this string length key already been added
+                stringLen.get(len).add(word);
+            } else {    // create a new ArrayList and add to map
+                ArrayList<String> list = new ArrayList<>();
+                list.add(word);
+                stringLen.put(len, list);
+            }
+        }
+
+        scanner.close();
+
+        //System.out.println(stringLen.get(20));
 
     }
 
@@ -61,5 +86,10 @@ public class WordRecommender {
      */
     public double getRightSimilarity(String word1, String word2) {
         return 0.0;
+    }
+
+    public static void main(String[] args) throws IOException {
+//        FileInputStream file = new FileInputStream("engDictionary.txt");
+        WordRecommender recommender = new WordRecommender("engDictionary.txt");
     }
   }
