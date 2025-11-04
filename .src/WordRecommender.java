@@ -26,6 +26,8 @@ public class WordRecommender {
             }
         }
 
+        getStringLen(stringLen);
+
         scanner.close();
 
         //System.out.println(stringLen.get(20));
@@ -51,6 +53,9 @@ public class WordRecommender {
     /*
     Return a double, showing the percentage of characters in common between String word1 and word2
     |aSet AND bSet| / |aSet OR bSet|
+    Input: String word1
+           String word2
+    Output: double commonPercentage
      */
     public double getCommon(String word1, String word2) {
         HashSet<String> set1 = new HashSet<>();
@@ -79,11 +84,26 @@ public class WordRecommender {
      */
     public ArrayList<String> getWordSuggestions(String word, int tolerance, double commonPercent, int topN) {
       // TODO: change this!
-      return null;
+        int wordLen = word.length();
+        ArrayList<String> suggestions = new ArrayList<>();
+        HashMap<Integer, ArrayList<String>> stringLen =
+        // 1. find candidate word with length of accepted tolerance
+        for (int i = wordLen - tolerance; i <= wordLen + tolerance; i++) {
+            if (stringLen)
+        }
+
+
+        return null;
     }
 
-
-
+    /*
+    Return the HashMap containing String length - ArrayList<String> pairs
+    Input: HashMap<Integer, ArrayList<String>>
+    Output: HashMap<Integer, ArrayList<String>>
+     */
+    public HashMap<Integer, ArrayList<String>> getStringLen(HashMap<Integer, ArrayList<String>> stringLen) {
+        return stringLen;
+    }
 
     /*
     Return a double, consisting the left similarity (commonPercent) for word1 and word2
@@ -177,6 +197,7 @@ public class WordRecommender {
         union.addAll(set2);
         return union.size();
     }
+
 
 
     public static void main(String[] args) throws IOException {
