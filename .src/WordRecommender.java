@@ -8,9 +8,26 @@ import java.util.Scanner;
 
 public class WordRecommender {
     private String dictionaryFile;
+    private HashMap<Integer, ArrayList<String>> stringLen;
 
     public WordRecommender(String dictionaryFile) throws FileNotFoundException {
         this.dictionaryFile = dictionaryFile;
+        this.stringLen = new HashMap<>();
+
+        FileInputStream dictionary = new FileInputStream(dictionaryFile);
+        Scanner scanner = new Scanner(dictionary);
+        while (scanner.hasNextLine()) {
+            String word = scanner.nextLine();
+            int len = word.length();
+            if (this.stringLen.containsKey(len)) {   // this string length key already been added
+                this.stringLen.get(len).add(word);
+            } else {    // create a new ArrayList and add to map
+                ArrayList<String> list = new ArrayList<>();
+                list.add(word);
+                this.stringLen.put(len, list);
+            }
+        }
+        scanner.close();
     }
 
 
@@ -36,13 +53,13 @@ public class WordRecommender {
     Output: double commonPercentage
      */
     public double getCommon(String word1, String word2) {
-        HashSet<String> set1 = new HashSet<>();
-        HashSet<String> set2 = new HashSet<>();
+        HashSet<Character> set1 = new HashSet<>();
+        HashSet<Character> set2 = new HashSet<>();
         for (char i : word1.toCharArray()) {
-            set1.add(String.valueOf(i));
+            set1.add(i);
         }
         for (char i : word2.toCharArray()) {
-            set2.add(String.valueOf(i));
+            set2.add(i);
         }
 
         int intersection = setIntersection(set1, set2);
@@ -59,13 +76,12 @@ public class WordRecommender {
            int topN, the # of edit suggestions for parameter word -> depends on similarity
     Output: ArrayList<String>, the suggested words
      */
-    public ArrayList<String> getWordSuggestions(String word, int tolerance, double commonPercent, int topN)
-            throws FileNotFoundException {
+    public ArrayList<String> getWordSuggestions(String word, int tolerance, double commonPercent, int topN) {
 
         int wordLen = word.length();
         ArrayList<String> filter = new ArrayList<>();
         ArrayList<String> suggestions = new ArrayList<>();
-        HashMap<Integer, ArrayList<String>> stringLen = getStringLen(this.dictionaryFile);
+        HashMap<Integer, ArrayList<String>> stringLen = this.stringLen;
 
         // 1. find candidate word with length of accepted tolerance
         for (int i = wordLen - tolerance; i <= wordLen + tolerance; i++) {
@@ -85,6 +101,7 @@ public class WordRecommender {
         // 3. rank the topN candidates based on left-right similarity
         for (String s : filter) {
             double similarity = getSimilarity(s, word);
+            System.out.println("Word: " + s + " Similarity: " + similarity);
             int insertIndex = 0;
             for (int i = 0; i < suggestions.size(); i++) {
                 if (getSimilarity(suggestions.get(i), word) >= similarity) { // move the smaller similarity to the back
@@ -96,16 +113,21 @@ public class WordRecommender {
             suggestions.add(insertIndex, s);
         }
 
-
-        // TESTING
+        // Testing
+        System.out.println("--------------------------------");
         for (String s : suggestions) {
-            System.out.println(s);
-            //System.out.println("SIMILARITY IS: " + getSimilarity(s, word));
+            double similarity = getSimilarity(s, word);
+            System.out.println("Word: " + s + " Similarity: " + similarity);
         }
 
-        suggestions = new ArrayList<>(suggestions.subList(0, topN));
+        // 4. Save the topN suggestions
+        if (suggestions.size() >= topN) {
+            suggestions = new ArrayList<>(suggestions.subList(0, topN));
+        }
+
 
         // TESTING
+        System.out.println("--------------------------------");
         for (String s : suggestions) {
             System.out.println(s);
         }
@@ -115,26 +137,11 @@ public class WordRecommender {
 
     /*
     Return the HashMap containing String length - ArrayList<String> pairs
-    Input: String fileName, the file containing dictionary
-    Output: HashMap<Integer, ArrayList<String>>
+    Input: None
+    Output: None
      */
-    public HashMap<Integer, ArrayList<String>> getStringLen(String fileName) throws FileNotFoundException {
-        HashMap<Integer, ArrayList<String>> stringLen = new HashMap<>();
-        FileInputStream dictionary = new FileInputStream(fileName);
-        Scanner scanner = new Scanner(dictionary);
-        while (scanner.hasNextLine()) {
-            String word = scanner.nextLine();
-            int len = word.length();
-            if (stringLen.containsKey(len)) {   // this string length key already been added
-                stringLen.get(len).add(word);
-            } else {    // create a new ArrayList and add to map
-                ArrayList<String> list = new ArrayList<>();
-                list.add(word);
-                stringLen.put(len, list);
-            }
-        }
-        scanner.close();
-        return stringLen;
+    public HashMap<Integer, ArrayList<String>> getStringLen() {
+        return this.stringLen;
     }
 
     /*
@@ -164,7 +171,7 @@ public class WordRecommender {
             }
             i++;
         }
-        //System.out.println("the left similarity is " + result);
+
         return result;
     }
 
@@ -197,7 +204,6 @@ public class WordRecommender {
             i++;
         }
 
-        //System.out.println("the right similarity is " + result);
         return result;
     }
 
@@ -207,9 +213,9 @@ public class WordRecommender {
            Hashset set2
     Output: int # of characters
      */
-    public int setIntersection(HashSet<String> set1, HashSet<String> set2) {
+    public int setIntersection(HashSet<Character> set1, HashSet<Character> set2) {
         int result = 0;
-        for (String word : set1) {
+        for (Character word : set1) {
             if (set2.contains(word)) {
                 result++;
             }
@@ -223,8 +229,8 @@ public class WordRecommender {
            Hashset set2
     Output: int # of characters
     */
-    public int setUnion(HashSet<String> set1, HashSet<String> set2) {
-        HashSet<String> union = new HashSet<>();
+    public int setUnion(HashSet<Character> set1, HashSet<Character> set2) {
+        HashSet<Character> union = new HashSet<>();
         union.addAll(set1);
         union.addAll(set2);
         return union.size();
@@ -233,13 +239,9 @@ public class WordRecommender {
 
 
     public static void main(String[] args) throws IOException {
-//        FileInputStream file = new FileInputStream("engDictionary.txt");
         WordRecommender recommender = new WordRecommender("engDictionary.txt");
         System.out.println("Hi!");
-        ArrayList<String> suggestions = recommender.getWordSuggestions("automagically", 1, 0.5, 4);
-        //HashMap<Integer, ArrayList<String>> stringLen = recommender.getStringLen("engDictionary.txt");
-        //System.out.println(stringLen.get(1).size());
-        //double common = recommender.getCommon("te", "yet");
-        //System.out.println(common);
+        ArrayList<String> suggestions = recommender.getWordSuggestions("tenny", 1, 0.5, 4);
+
     }
   }
