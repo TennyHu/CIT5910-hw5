@@ -7,9 +7,10 @@ import java.util.HashSet;
 import java.util.Scanner;
 
 public class WordRecommender {
+    private String dictionaryFile;
 
     public WordRecommender(String dictionaryFile) throws FileNotFoundException {
-        getStringLen(dictionaryFile);
+        this.dictionaryFile = dictionaryFile;
     }
 
 
@@ -59,14 +60,21 @@ public class WordRecommender {
            int topN, the # of edit suggestions for parameter word -> depends on similarity
     Output: ArrayList<String>, the suggested words
      */
-    public ArrayList<String> getWordSuggestions(String word, int tolerance, double commonPercent, int topN) {
+    public ArrayList<String> getWordSuggestions(String word, int tolerance, double commonPercent, int topN)
+            throws FileNotFoundException {
       // TODO: change this!
         int wordLen = word.length();
         ArrayList<String> suggestions = new ArrayList<>();
-        //HashMap<Integer, ArrayList<String>> stringLen =
+        HashMap<Integer, ArrayList<String>> stringLen = getStringLen(this.dictionaryFile);
         // 1. find candidate word with length of accepted tolerance
         for (int i = wordLen - tolerance; i <= wordLen + tolerance; i++) {
-//            if (stringLen)
+            if (stringLen.containsKey(i)) {
+                suggestions.addAll(stringLen.get(i));
+            }
+        }
+
+        for (String s : suggestions) {
+            System.out.println(s);
         }
 
 
@@ -196,9 +204,10 @@ public class WordRecommender {
 //        FileInputStream file = new FileInputStream("engDictionary.txt");
         WordRecommender recommender = new WordRecommender("engDictionary.txt");
         System.out.println("Hi!");
-        HashMap<Integer, ArrayList<String>> stringLen = recommender.getStringLen("engDictionary.txt");
-        System.out.println(stringLen.get(1).size());
-        double common = recommender.getCommon("gardener", "nerdier");
-        System.out.println(common);
+        //ArrayList<String> suggestions = recommender.getWordSuggestions("te", 1, 0.5, 4);
+        //HashMap<Integer, ArrayList<String>> stringLen = recommender.getStringLen("engDictionary.txt");
+        //System.out.println(stringLen.get(1).size());
+        //double common = recommender.getCommon("gardener", "nerdier");
+        //System.out.println(common);
     }
   }
