@@ -124,6 +124,7 @@ public class SpellChecker {
             while (true) {
                 System.out.printf(Util.TWO_OPTION_PROMPT);
                 System.out.print(">>");
+                // CHANGED -> WORK CORRECTLY
                 String selected = inputReader.nextLine();
 
                 if (selected.equals("t")) {
@@ -131,6 +132,7 @@ public class SpellChecker {
                         System.out.printf(Util.MANUAL_REPLACEMENT_PROMPT);
                         System.out.print(">>");
                         String replacement = inputReader.nextLine();
+                        // CHANGED -> WORK CORRECTLY
                         if (replacement.isBlank()) {        // handle the case when input is empty
                             continue;
                         }
@@ -150,6 +152,7 @@ public class SpellChecker {
             while (true) {
                 System.out.printf(Util.THREE_OPTION_PROMPT);
                 System.out.print(">>");
+                // CHANGED -> WORK CORRECTLY
                 String selected = inputReader.nextLine();
 
                 if (selected.equals("t")) {
