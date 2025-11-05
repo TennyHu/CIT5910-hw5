@@ -1,3 +1,4 @@
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -111,7 +112,7 @@ public class SpellChecker {
         return dictionary.contains(word);
     }
 
-    // Mthod to ask user what to do when encountered misspelled word and returns replacement word
+    // Method to ask user what to do when encountered misspelled word and returns replacement word
     private String typoHandling(String word, String dictName) throws FileNotFoundException {
         System.out.printf(Util.MISSPELL_NOTIFICATION, word);
         WordRecommender recommender = new WordRecommender(".src/" + dictName);
@@ -123,14 +124,18 @@ public class SpellChecker {
             while (true) {
                 System.out.printf(Util.TWO_OPTION_PROMPT);
                 System.out.print(">>");
-                String selected = inputReader.next();
+                String selected = inputReader.nextLine();
 
                 if (selected.equals("t")) {
-                    System.out.printf(Util.MANUAL_REPLACEMENT_PROMPT);
-                    System.out.print(">>");
-                    String replacement = inputReader.next();
-                    return replacement;
-
+                    while (true) {
+                        System.out.printf(Util.MANUAL_REPLACEMENT_PROMPT);
+                        System.out.print(">>");
+                        String replacement = inputReader.nextLine();
+                        if (replacement.isBlank()) {        // handle the case when input is empty
+                            continue;
+                        }
+                        return replacement;
+                     }
                 } else if (selected.equals("a")) {
                     return word;
                 } else {
@@ -145,7 +150,7 @@ public class SpellChecker {
             while (true) {
                 System.out.printf(Util.THREE_OPTION_PROMPT);
                 System.out.print(">>");
-                String selected = inputReader.next();
+                String selected = inputReader.nextLine();
 
                 if (selected.equals("t")) {
                     System.out.printf(Util.MANUAL_REPLACEMENT_PROMPT);
@@ -189,6 +194,7 @@ public class SpellChecker {
             System.out.printf(">>");
 
             String input = inputReader.nextLine();
+            // handle the case when input is empty
             if (input.isEmpty()) {
                 System.out.printf(Util.INVALID_RESPONSE);
 
