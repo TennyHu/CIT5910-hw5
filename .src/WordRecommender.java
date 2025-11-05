@@ -101,7 +101,6 @@ public class WordRecommender {
         // 3. rank the topN candidates based on left-right similarity
         for (String s : filter) {
             double similarity = getSimilarity(s, word);
-            System.out.println("Word: " + s + " Similarity: " + similarity);
             int insertIndex = 0;
             for (int i = 0; i < suggestions.size(); i++) {
                 if (getSimilarity(suggestions.get(i), word) >= similarity) { // move the smaller similarity to the back
@@ -239,9 +238,9 @@ public class WordRecommender {
 
 
     public static void main(String[] args) throws IOException {
-        WordRecommender recommender = new WordRecommender("engDictionary.txt");
+        WordRecommender recommender = new WordRecommender(".src/engDictionary.txt");
         System.out.println("Hi!");
-        ArrayList<String> suggestions = recommender.getWordSuggestions("tenny", 1, 0.5, 4);
+        ArrayList<String> suggestions = recommender.getWordSuggestions("hillo", 1, 0.5, 4);
 
     }
   }

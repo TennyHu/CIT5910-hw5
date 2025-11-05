@@ -171,17 +171,41 @@ public class SpellChecker {
     private String autoReplacement(ArrayList<String> suggestions) {
         System.out.printf(Util.AUTOMATIC_REPLACEMENT_PROMPT);
         while (true) {
+            //System.out.printf(">>");
+//            inputReader.nextLine(); // Added in this line and prevented infinite loop!!! Check WHY!
+//            // System.out.println("I'm after the nextLine()!");
+//            if (!inputReader.hasNextInt()) {
+//                System.out.println("I'm in 1st if statement");
+//                System.out.printf(Util.INVALID_RESPONSE); // Ask for another response when invalid input
+//            } else {
+//                int intInput = inputReader.nextInt();
+//                if (intInput > suggestions.size() || intInput <= 0) {   // Invalid number is input
+//                    System.out.println("I'm in 2nd if statement");
+//                    System.out.printf(Util.INVALID_RESPONSE);
+//                } else {
+//                    return suggestions.get(intInput - 1);   // Return word at corresponding index of the array
+//                }
+//            }
             System.out.printf(">>");
-            inputReader.nextLine(); // Added in this line and prevented infinite loop!!! Check WHY!
-            if (!inputReader.hasNextInt()) {
-                System.out.printf(Util.INVALID_RESPONSE); // Ask for another response when invalid input
-            } else {
-                int intInput = inputReader.nextInt();
-                if (intInput > suggestions.size() || intInput <= 0) {   // Invalid number is input
+
+            String input = inputReader.nextLine();
+            if (input.isEmpty()) {
+                System.out.printf(Util.INVALID_RESPONSE);
+
+            }
+
+            try {
+                int intInput = Integer.parseInt(input);
+                System.out.println("The input int is: " + intInput);
+
+                if (intInput > suggestions.size() || intInput <= 0) {
                     System.out.printf(Util.INVALID_RESPONSE);
                 } else {
-                    return suggestions.get(intInput - 1);   // Return word at corresponding index of the array
+                    return suggestions.get(intInput - 1);
                 }
+
+            } catch (NumberFormatException e) {
+                System.out.printf(Util.INVALID_RESPONSE);
             }
         }
     }
