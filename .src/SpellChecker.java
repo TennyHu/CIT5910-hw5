@@ -24,11 +24,11 @@ public class SpellChecker {
         System.out.printf(Util.FILE_SUCCESS_NOTIFICATION, fileName, outputFile);
 
         // Create input stream
-        FileInputStream input = new FileInputStream(fileName);
+        FileInputStream input = new FileInputStream(".src/" + fileName);
         Scanner scnr = new Scanner(input);
 
         // Create output writer
-        FileOutputStream output = new FileOutputStream(outputFile);
+        FileOutputStream output = new FileOutputStream(".src/" + outputFile);
         PrintWriter writer = new PrintWriter(output);
 
         // Call to method to make dictionary a HashSet
@@ -38,15 +38,15 @@ public class SpellChecker {
             String word = scnr.next();
             // Method to check if word exists in the dictionary and returns true
             if (validWord(word, dictionarySet)) {
-                writer.print(word);
+                writer.print(word + " ");
 
             } else {
-                // TODO: Call to exceptions method - return word to add
-                writer.print(word);
+                String replaceWordWith = typoHandling(word, dictName);
+                writer.print(replaceWordWith + " ");
             }
-
         }
 
+        writer.close();
         inputReader.close();  // DO NOT MODIFY - must be the last line of this method!
 
     }
@@ -96,7 +96,7 @@ public class SpellChecker {
     // Method to make dictionary into a set and return this set
     private HashSet<String> dictionarySet(String inputDict) throws FileNotFoundException {
         HashSet<String> dictSet = new HashSet<>();
-        FileInputStream dictionary = new FileInputStream(inputDict);
+        FileInputStream dictionary = new FileInputStream(".src/" + inputDict);
         Scanner dictScnr = new Scanner(dictionary);
 
         while (dictScnr.hasNext()) {
@@ -108,27 +108,88 @@ public class SpellChecker {
 
     // Method to check if word is in the dictionary - returns true if valid
     private boolean validWord(String word, HashSet dictionary) {
-
-        dictionary.contains(word);
-
-        return false;
+        return dictionary.contains(word);
     }
 
-    // TODO: complete typoHandling method -> state word is misspelled and call to WordRecommender
-    private String typoHandling(String word) {
+    // Mthod to ask user what to do when encountered misspelled word and returns replacement word
+    private String typoHandling(String word, String dictName) throws FileNotFoundException {
         System.out.printf(Util.MISSPELL_NOTIFICATION, word);
-        // Call to wordRecommender
-        // Asks user how to deal with the typo
-        // Returns word to add to the file
-        return "";
+        WordRecommender recommender = new WordRecommender(".src/" + dictName);
+        ArrayList<String> suggestions = recommender.getWordSuggestions(word, 2, 0.5, 4);
+
+        // Printing suggestions
+        if (suggestions.size() == 0) { // when there are no valid suggestions
+            System.out.printf(Util.NO_SUGGESTIONS);
+            while (true) {
+                System.out.printf(Util.TWO_OPTION_PROMPT);
+                System.out.print(">>");
+                String selected = inputReader.next();
+
+                if (selected.equals("t")) {
+                    System.out.printf(Util.MANUAL_REPLACEMENT_PROMPT);
+                    System.out.print(">>");
+                    String replacement = inputReader.next();
+                    return replacement;
+
+                } else if (selected.equals("a")) {
+                    return word;
+                } else {
+                    System.out.printf(Util.INVALID_RESPONSE);
+                }
+            }
+        } else {    // When suggestions arraylist is not empty
+            System.out.printf(Util.FOLLOWING_SUGGESTIONS);
+            for (int i = 0; i < suggestions.size(); i++) {    // for every suggestion in the arraylist, list these for the user to see
+                System.out.printf(Util.SUGGESTION_ENTRY, i + 1, suggestions.get(i));
+            }
+            while (true) {
+                System.out.printf(Util.THREE_OPTION_PROMPT);
+                System.out.print(">>");
+                String selected = inputReader.next();
+
+                if (selected.equals("t")) {
+                    System.out.printf(Util.MANUAL_REPLACEMENT_PROMPT);
+                    System.out.print(">>");
+                    String replacement = inputReader.next();
+                    return replacement;
+
+                } else if (selected.equals("a")) {
+                    return word;
+
+                } else if (selected.equals("r")) {
+                    String replaceWith = autoReplacement(suggestions);
+                    return replaceWith;     // return the word user input corresponds to
+
+                } else {
+                    System.out.printf(Util.INVALID_RESPONSE);
+                }
+            }
+        }
+    }
+
+    // Method to allow user to pick which of the recommended words to replace misspelled word with. Returns the replacement word
+    private String autoReplacement(ArrayList<String> suggestions) {
+        System.out.printf(Util.AUTOMATIC_REPLACEMENT_PROMPT);
+        while (true) {
+            System.out.printf(">>");
+            inputReader.nextLine(); // Added in this line and prevented infinite loop!!! Check WHY!
+            if (!inputReader.hasNextInt()) {
+                System.out.printf(Util.INVALID_RESPONSE); // Ask for another response when invalid input
+            } else {
+                int intInput = inputReader.nextInt();
+                if (intInput > suggestions.size() || intInput <= 0) {   // Invalid number is input
+                    System.out.printf(Util.INVALID_RESPONSE);
+                } else {
+                    return suggestions.get(intInput - 1);   // Return word at corresponding index of the array
+                }
+            }
+        }
     }
 
     public static void main(String[] args) throws FileNotFoundException {
         SpellChecker s = new SpellChecker();
         s.start();
         FileInputStream input = new FileInputStream(".src/engDictionary.txt");
-
-
     }
 }
 
