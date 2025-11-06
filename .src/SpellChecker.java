@@ -19,6 +19,17 @@ public class SpellChecker {
         // Dictionary is successfully opened
         System.out.printf(Util.DICTIONARY_SUCCESS_NOTIFICATION, dictName);
 
+
+
+
+
+
+
+
+
+
+
+
         String fileName = inputFile();
         // Dictionary is successfully opened
         String outputFile = fileName.substring(0, fileName.length() - 4) + "_chk.txt"; // Call output file INPUT-FILE-NAME_chk.txt
