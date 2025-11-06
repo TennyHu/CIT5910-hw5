@@ -244,7 +244,7 @@ public class WordRecommender {
     public static void main(String[] args) throws IOException {
         WordRecommender recommender = new WordRecommender(".src/engDictionary.txt");
         System.out.println("Hi!");
-        ArrayList<String> suggestions = recommender.getWordSuggestions("ewook", 2, 0.5, 5);
+        ArrayList<String> suggestions = recommender.getWordSuggestions("kat", 2, 0.5, 5);
 
     }
   }
