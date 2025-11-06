@@ -14,22 +14,26 @@ public class WordRecommender {
         this.dictionaryFile = dictionaryFile;
         this.stringLen = new HashMap<>();
 
-        FileInputStream dictionary = new FileInputStream(dictionaryFile);
-        Scanner scanner = new Scanner(dictionary);
-        while (scanner.hasNextLine()) {
-            String word = scanner.nextLine();
-            int len = word.length();
-            if (this.stringLen.containsKey(len)) {   // this string length key already been added
-                this.stringLen.get(len).add(word);
-            } else {    // create a new ArrayList and add to map
-                ArrayList<String> list = new ArrayList<>();
-                list.add(word);
-                this.stringLen.put(len, list);
+        try {
+            FileInputStream dictionary = new FileInputStream(dictionaryFile);
+            Scanner scanner = new Scanner(dictionary);
+            while (scanner.hasNextLine()) {
+                String word = scanner.nextLine();
+                int len = word.length();
+                if (this.stringLen.containsKey(len)) {   // this string length key already been added
+                    this.stringLen.get(len).add(word);
+                } else {    // create a new ArrayList and add to map
+                    ArrayList<String> list = new ArrayList<>();
+                    list.add(word);
+                    this.stringLen.put(len, list);
+                }
             }
+            scanner.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found!");
         }
-        scanner.close();
-    }
 
+    }
 
     /*
     Return a double, consisting the similarity (commonPercent) for word1 and word2
