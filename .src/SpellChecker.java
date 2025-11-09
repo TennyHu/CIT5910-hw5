@@ -95,16 +95,21 @@ public class SpellChecker {
     }
 
     // Method to make dictionary into a set and return this set
-    private HashSet<String> dictionarySet(String inputDict) throws FileNotFoundException {
+    private HashSet<String> dictionarySet(String inputDict) {
         HashSet<String> dictSet = new HashSet<>();
-        FileInputStream dictionary = new FileInputStream(".src/" + inputDict);
-        Scanner dictScnr = new Scanner(dictionary);
+        try {
+            FileInputStream dictionary = new FileInputStream(".src/" + inputDict);
+            Scanner dictScnr = new Scanner(dictionary);
 
-        while (dictScnr.hasNext()) {
-            String dictWord = dictScnr.next();
-            dictSet.add(dictWord);
+            while (dictScnr.hasNext()) {
+                String dictWord = dictScnr.next();
+                dictSet.add(dictWord);
+            }
+        } catch (FileNotFoundException e){
+            System.out.println("Error in opening dictionary");
         }
         return dictSet;
+
     }
 
     // Method to check if word is in the dictionary - returns true if valid
