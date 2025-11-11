@@ -69,13 +69,13 @@ public class SpellChecker {
     private String inputDict() {
         System.out.printf(Util.DICTIONARY_PROMPT);
         System.out.print(">> ");
-        String fileName = inputReader.next();
+        String fileName = inputReader.nextLine();
 
         // Continue asking user to input dictionary name until successfully opened
         while (!validFile(fileName)) {
             System.out.printf(Util.DICTIONARY_PROMPT);
             System.out.print(">> ");
-            fileName = inputReader.next();
+            fileName = inputReader.nextLine();
         }
         return fileName;
     }
@@ -84,13 +84,13 @@ public class SpellChecker {
     private String inputFile() {
         System.out.printf(Util.FILENAME_PROMPT);
         System.out.print(">> ");
-        String inputName = inputReader.next();
+        String inputName = inputReader.nextLine();
 
         // Continue asking user to input file name until successfully opened
         while (!validFile(inputName)) {
             System.out.printf(Util.FILENAME_PROMPT);
             System.out.print(">> ");
-            inputName = inputReader.next();
+            inputName = inputReader.nextLine();
         }
         return inputName;
     }
@@ -162,6 +162,7 @@ public class SpellChecker {
                     System.out.printf(Util.MANUAL_REPLACEMENT_PROMPT);
                     System.out.print(">>");
                     String replacement = inputReader.next();
+                    inputReader.nextLine();
                     return replacement;
 
                 } else if (selected.equals("a")) {
