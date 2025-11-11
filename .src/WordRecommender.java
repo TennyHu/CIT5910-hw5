@@ -10,7 +10,7 @@ public class WordRecommender {
     private String dictionaryFile;
     private HashMap<Integer, ArrayList<String>> stringLen;
 
-    public WordRecommender(String dictionaryFile) throws FileNotFoundException {
+    public WordRecommender(String dictionaryFile) {
         this.dictionaryFile = dictionaryFile;
         this.stringLen = new HashMap<>();
 

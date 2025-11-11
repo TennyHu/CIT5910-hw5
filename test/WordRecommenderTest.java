@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
@@ -10,12 +11,13 @@ public class WordRecommenderTest {
     private String inputFile;
     private WordRecommender wordRecommender;
 
-    public WordRecommenderTest() {
-        this.inputFile = ".src/testDictionary.txt";
-        System.out.println("Input file: " + this.inputFile);
+    @BeforeEach
+    public void setUp() {
         try {
+            this.inputFile = ".src/testDictionary.txt";
+            System.out.println("Input file: " + this.inputFile);
             this.wordRecommender = new WordRecommender(this.inputFile);
-        } catch(FileNotFoundException e) {
+        } catch(Exception e) {
             System.out.println("File not found!");
         }
     }
