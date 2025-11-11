@@ -68,13 +68,13 @@ public class SpellChecker {
     // Helper method to ask user for dictionary to use
     private String inputDict() {
         System.out.printf(Util.DICTIONARY_PROMPT);
-        System.out.print(">> ");
+//        System.out.print(">> ");
         String fileName = inputReader.nextLine();
 
         // Continue asking user to input dictionary name until successfully opened
         while (!validFile(fileName)) {
             System.out.printf(Util.DICTIONARY_PROMPT);
-            System.out.print(">> ");
+//            System.out.print(">> ");
             fileName = inputReader.nextLine();
         }
         return fileName;
@@ -83,13 +83,13 @@ public class SpellChecker {
     // Helper method to ask user for file to spellcheck
     private String inputFile() {
         System.out.printf(Util.FILENAME_PROMPT);
-        System.out.print(">> ");
+//        System.out.print(">> ");
         String inputName = inputReader.nextLine();
 
         // Continue asking user to input file name until successfully opened
         while (!validFile(inputName)) {
             System.out.printf(Util.FILENAME_PROMPT);
-            System.out.print(">> ");
+//            System.out.print(">> ");
             inputName = inputReader.nextLine();
         }
         return inputName;
@@ -129,13 +129,13 @@ public class SpellChecker {
             System.out.printf(Util.NO_SUGGESTIONS);
             while (true) {  // Continue asking user for input whilst input is invalid
                 System.out.printf(Util.TWO_OPTION_PROMPT);
-                System.out.print(">>");
+//                System.out.print(">>");
                 String selected = inputReader.nextLine();
 
                 if (selected.equals("t")) {
                     while (true) {
                         System.out.printf(Util.MANUAL_REPLACEMENT_PROMPT);
-                        System.out.print(">>");
+//                        System.out.print(">>");
                         String replacement = inputReader.nextLine();
                         if (replacement.isBlank()) {        // handle the case when input is empty
                             continue;
@@ -155,12 +155,12 @@ public class SpellChecker {
             }
             while (true) {  // continue asking user for input whilst input received is invalid
                 System.out.printf(Util.THREE_OPTION_PROMPT);
-                System.out.print(">>");
+//                System.out.print(">>");
                 String selected = inputReader.nextLine();
 
                 if (selected.equals("t")) {
                     System.out.printf(Util.MANUAL_REPLACEMENT_PROMPT);
-                    System.out.print(">>");
+//                    System.out.print(">>");
                     String replacement = inputReader.next();
                     inputReader.nextLine();
                     return replacement;
@@ -183,7 +183,7 @@ public class SpellChecker {
     private String autoReplacement(ArrayList<String> suggestions) {
         while (true) {
             System.out.printf(Util.AUTOMATIC_REPLACEMENT_PROMPT);
-            System.out.printf(">>");
+//            System.out.printf(">>");
 
             String input = inputReader.nextLine();
             // handle the case when input is empty
