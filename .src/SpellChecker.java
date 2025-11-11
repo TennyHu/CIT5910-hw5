@@ -181,8 +181,8 @@ public class SpellChecker {
 
     // Method to allow user to pick which of the recommended words to replace misspelled word with. Returns the replacement word
     private String autoReplacement(ArrayList<String> suggestions) {
-        System.out.printf(Util.AUTOMATIC_REPLACEMENT_PROMPT);
         while (true) {
+            System.out.printf(Util.AUTOMATIC_REPLACEMENT_PROMPT);
             System.out.printf(">>");
 
             String input = inputReader.nextLine();
