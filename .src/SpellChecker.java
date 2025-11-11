@@ -137,9 +137,9 @@ public class SpellChecker {
                         System.out.printf(Util.MANUAL_REPLACEMENT_PROMPT);
 //                        System.out.print(">>");
                         String replacement = inputReader.nextLine();
-                        if (replacement.isBlank()) {        // handle the case when input is empty
-                            continue;
-                        }
+//                        if (replacement.isBlank()) {        // handle the case when input is empty
+//                            continue;
+//                        }
                         return replacement;
                     }
                 } else if (selected.equals("a")) {
