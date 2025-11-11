@@ -23,11 +23,11 @@ public class SpellChecker {
 
         try {
             // Create input stream
-            FileInputStream input = new FileInputStream(".src/" + fileName);
+            FileInputStream input = new FileInputStream(fileName);
             Scanner scnr = new Scanner(input);
 
             // Create output writer
-            FileOutputStream output = new FileOutputStream(".src/" + outputFile);
+            FileOutputStream output = new FileOutputStream(outputFile);
             PrintWriter writer = new PrintWriter(output);
 
             // Call to method to make dictionary a HashSet
@@ -57,7 +57,7 @@ public class SpellChecker {
     // Helper function to check if valid file
     private boolean validFile(String fileName) {
         try {
-            FileInputStream input = new FileInputStream(".src/" + fileName);
+            FileInputStream input = new FileInputStream(fileName);
             return true;
         } catch (IOException e) {
             System.out.printf(Util.FILE_OPENING_ERROR);
@@ -99,7 +99,7 @@ public class SpellChecker {
     private HashSet<String> dictionarySet(String inputDict) {
         HashSet<String> dictSet = new HashSet<>();
         try {
-            FileInputStream dictionary = new FileInputStream(".src/" + inputDict);
+            FileInputStream dictionary = new FileInputStream(inputDict);
             Scanner dictScnr = new Scanner(dictionary);
 
             while (dictScnr.hasNext()) {
@@ -121,7 +121,7 @@ public class SpellChecker {
     // Method to ask user what to do when encountered misspelled word and returns replacement word
     private String typoHandling(String word, String dictName) {
         System.out.printf(Util.MISSPELL_NOTIFICATION, word);
-        WordRecommender recommender = new WordRecommender(".src/" + dictName);
+        WordRecommender recommender = new WordRecommender(dictName);
         ArrayList<String> suggestions = recommender.getWordSuggestions(word, 2, 0.5, 4);
 
         // Printing suggestions
