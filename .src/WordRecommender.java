@@ -10,26 +10,30 @@ public class WordRecommender {
     private String dictionaryFile;
     private HashMap<Integer, ArrayList<String>> stringLen;
 
-    public WordRecommender(String dictionaryFile) throws FileNotFoundException {
+    public WordRecommender(String dictionaryFile) {
         this.dictionaryFile = dictionaryFile;
         this.stringLen = new HashMap<>();
 
-        FileInputStream dictionary = new FileInputStream(dictionaryFile);
-        Scanner scanner = new Scanner(dictionary);
-        while (scanner.hasNextLine()) {
-            String word = scanner.nextLine();
-            int len = word.length();
-            if (this.stringLen.containsKey(len)) {   // this string length key already been added
-                this.stringLen.get(len).add(word);
-            } else {    // create a new ArrayList and add to map
-                ArrayList<String> list = new ArrayList<>();
-                list.add(word);
-                this.stringLen.put(len, list);
+        try {
+            FileInputStream dictionary = new FileInputStream(dictionaryFile);
+            Scanner scanner = new Scanner(dictionary);
+            while (scanner.hasNextLine()) {
+                String word = scanner.nextLine();
+                int len = word.length();
+                if (this.stringLen.containsKey(len)) {   // this string length key already been added
+                    this.stringLen.get(len).add(word);
+                } else {    // create a new ArrayList and add to map
+                    ArrayList<String> list = new ArrayList<>();
+                    list.add(word);
+                    this.stringLen.put(len, list);
+                }
             }
+            scanner.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found!");
         }
-        scanner.close();
-    }
 
+    }
 
     /*
     Return a double, consisting the similarity (commonPercent) for word1 and word2
@@ -240,7 +244,7 @@ public class WordRecommender {
     public static void main(String[] args) throws IOException {
         WordRecommender recommender = new WordRecommender(".src/engDictionary.txt");
         System.out.println("Hi!");
-        ArrayList<String> suggestions = recommender.getWordSuggestions("hillo", 1, 0.5, 4);
+        ArrayList<String> suggestions = recommender.getWordSuggestions("kat", 2, 0.5, 5);
 
     }
   }
