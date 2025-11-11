@@ -66,6 +66,7 @@ public class WordRecommender {
             set2.add(i);
         }
 
+        // follow the formula |aSet ∩ bSet| / |aSet ∪ bSet|
         int intersection = setIntersection(set1, set2);
         int union = setUnion(set1, set2);
         return (double)intersection / union;
@@ -116,23 +117,9 @@ public class WordRecommender {
             suggestions.add(insertIndex, s);
         }
 
-        // Testing
-        System.out.println("--------------------------------");
-        for (String s : suggestions) {
-            double similarity = getSimilarity(s, word);
-            System.out.println("Word: " + s + " Similarity: " + similarity);
-        }
-
         // 4. Save the topN suggestions
         if (suggestions.size() >= topN) {
             suggestions = new ArrayList<>(suggestions.subList(0, topN));
-        }
-
-
-        // TESTING
-        System.out.println("--------------------------------");
-        for (String s : suggestions) {
-            System.out.println(s);
         }
 
         return suggestions;
@@ -167,6 +154,7 @@ public class WordRecommender {
             list2.add(array2[i]);
         }
 
+        // if the chars are the same, result++
         int i = 0;
         while (i < list1.size() && i < list2.size()) {
             if (list1.get(i).equals(list2.get(i))) {
@@ -199,6 +187,7 @@ public class WordRecommender {
             list2.add(array2[i]);
         }
 
+        // if the chars are the same, result++
         int i = 0;
         while (i < list1.size() && i < list2.size()) {
             if (list1.get(i).equals(list2.get(i))) {
@@ -239,12 +228,4 @@ public class WordRecommender {
         return union.size();
     }
 
-
-
-    public static void main(String[] args) throws IOException {
-        WordRecommender recommender = new WordRecommender(".src/engDictionary.txt");
-        System.out.println("Hi!");
-        ArrayList<String> suggestions = recommender.getWordSuggestions("kat", 2, 0.5, 5);
-
-    }
   }
