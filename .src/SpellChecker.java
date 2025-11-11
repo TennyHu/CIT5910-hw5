@@ -193,7 +193,6 @@ public class SpellChecker {
 
             try {
                 int intInput = Integer.parseInt(input);
-                System.out.println("The input int is: " + intInput);
 
                 if (intInput > suggestions.size() || intInput <= 0) {
                     System.out.printf(Util.INVALID_RESPONSE);
