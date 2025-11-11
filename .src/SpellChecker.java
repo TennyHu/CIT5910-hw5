@@ -6,50 +6,52 @@ import java.util.Scanner;
 
 public class SpellChecker {
     // Use this field everytime you need to read user input
-    private Scanner inputReader; // DO NOT MODIFY
+    private Scanner inputReader;
 
     public SpellChecker() {
-        inputReader = new Scanner(System.in); // DO NOT MODIFY - must be included in this method
-        // TODO: Complete the body of this constructor, as necessary.
+        inputReader = new Scanner(System.in);
     }
 
-    public void start() throws FileNotFoundException {
-        // TODO: Complete the body of this method, as necessary
-        String dictName = inputDict();
-        // Dictionary is successfully opened
-        System.out.printf(Util.DICTIONARY_SUCCESS_NOTIFICATION, dictName);
+    public void start() {
+        String dictName = inputDict();  // Call to method inputDict()
+        System.out.printf(Util.DICTIONARY_SUCCESS_NOTIFICATION, dictName);  // Dictionary is successfully opened
 
-        String fileName = inputFile();
-        // Dictionary is successfully opened
-        String outputFile = fileName.substring(0, fileName.length() - 4) + "_chk.txt"; // Call output file INPUT-FILE-NAME_chk.txt
-        System.out.printf(Util.FILE_SUCCESS_NOTIFICATION, fileName, outputFile);
+        String fileName = inputFile();  // Call to method inputFile()
 
-        // Create input stream
-        FileInputStream input = new FileInputStream(".src/" + fileName);
-        Scanner scnr = new Scanner(input);
+        String outputFile = fileName.substring(0, fileName.length() - 4) + "_chk.txt";  // Call output file INPUT-FILE-NAME_chk.txt
+        System.out.printf(Util.FILE_SUCCESS_NOTIFICATION, fileName, outputFile);    // Print output file success msg
 
-        // Create output writer
-        FileOutputStream output = new FileOutputStream(".src/" + outputFile);
-        PrintWriter writer = new PrintWriter(output);
+        try {
+            // Create input stream
+            FileInputStream input = new FileInputStream(".src/" + fileName);
+            Scanner scnr = new Scanner(input);
 
-        // Call to method to make dictionary a HashSet
-        HashSet<String> dictionarySet = dictionarySet(dictName);
+            // Create output writer
+            FileOutputStream output = new FileOutputStream(".src/" + outputFile);
+            PrintWriter writer = new PrintWriter(output);
 
-        while (scnr.hasNext()) {
-            String word = scnr.next();
-            // Method to check if word exists in the dictionary and returns true
-            if (validWord(word, dictionarySet)) {
-                writer.print(word + " ");
+            // Call to method to make dictionary a HashSet
+            HashSet<String> dictionarySet = dictionarySet(dictName);
 
-            } else {
-                String replaceWordWith = typoHandling(word, dictName);
-                writer.print(replaceWordWith + " ");
+            // Read from input file, handle typos accordingly and write to output file
+            while (scnr.hasNext()) {
+                String word = scnr.next();
+                // Method to check if word exists in the dictionary and returns true
+                if (validWord(word, dictionarySet)) {
+                    writer.print(word + " ");
+
+                } else {
+                    String replaceWordWith = typoHandling(word, dictName);
+                    writer.print(replaceWordWith + " ");
+                }
             }
+
+            writer.close();
+            inputReader.close();
+
+        } catch (FileNotFoundException e) {
+            System.out.println("InputStream / OutputStream could not be created");
         }
-
-        writer.close();
-        inputReader.close();  // DO NOT MODIFY - must be the last line of this method!
-
     }
 
     // Helper function to check if valid file
@@ -57,7 +59,6 @@ public class SpellChecker {
         try {
             FileInputStream input = new FileInputStream(".src/" + fileName);
             return true;
-
         } catch (IOException e) {
             System.out.printf(Util.FILE_OPENING_ERROR);
             return false;
@@ -105,7 +106,7 @@ public class SpellChecker {
                 String dictWord = dictScnr.next();
                 dictSet.add(dictWord);
             }
-        } catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             System.out.println("Error in opening dictionary");
         }
         return dictSet;
@@ -118,7 +119,7 @@ public class SpellChecker {
     }
 
     // Method to ask user what to do when encountered misspelled word and returns replacement word
-    private String typoHandling(String word, String dictName) throws FileNotFoundException {
+    private String typoHandling(String word, String dictName) {
         System.out.printf(Util.MISSPELL_NOTIFICATION, word);
         WordRecommender recommender = new WordRecommender(".src/" + dictName);
         ArrayList<String> suggestions = recommender.getWordSuggestions(word, 2, 0.5, 4);
@@ -126,10 +127,9 @@ public class SpellChecker {
         // Printing suggestions
         if (suggestions.size() == 0) { // when there are no valid suggestions
             System.out.printf(Util.NO_SUGGESTIONS);
-            while (true) {
+            while (true) {  // Continue asking user for input whilst input is invalid
                 System.out.printf(Util.TWO_OPTION_PROMPT);
                 System.out.print(">>");
-                // CHANGED -> WORK CORRECTLY
                 String selected = inputReader.nextLine();
 
                 if (selected.equals("t")) {
@@ -137,12 +137,11 @@ public class SpellChecker {
                         System.out.printf(Util.MANUAL_REPLACEMENT_PROMPT);
                         System.out.print(">>");
                         String replacement = inputReader.nextLine();
-                        // CHANGED -> WORK CORRECTLY
                         if (replacement.isBlank()) {        // handle the case when input is empty
                             continue;
                         }
                         return replacement;
-                     }
+                    }
                 } else if (selected.equals("a")) {
                     return word;
                 } else {
@@ -154,10 +153,9 @@ public class SpellChecker {
             for (int i = 0; i < suggestions.size(); i++) {    // for every suggestion in the arraylist, list these for the user to see
                 System.out.printf(Util.SUGGESTION_ENTRY, i + 1, suggestions.get(i));
             }
-            while (true) {
+            while (true) {  // continue asking user for input whilst input received is invalid
                 System.out.printf(Util.THREE_OPTION_PROMPT);
                 System.out.print(">>");
-                // CHANGED -> WORK CORRECTLY
                 String selected = inputReader.nextLine();
 
                 if (selected.equals("t")) {
@@ -170,7 +168,7 @@ public class SpellChecker {
                     return word;
 
                 } else if (selected.equals("r")) {
-                    String replaceWith = autoReplacement(suggestions);
+                    String replaceWith = autoReplacement(suggestions);  // call to method autoReplacement()
                     return replaceWith;     // return the word user input corresponds to
 
                 } else {
@@ -184,28 +182,12 @@ public class SpellChecker {
     private String autoReplacement(ArrayList<String> suggestions) {
         System.out.printf(Util.AUTOMATIC_REPLACEMENT_PROMPT);
         while (true) {
-            //System.out.printf(">>");
-//            inputReader.nextLine(); // Added in this line and prevented infinite loop!!! Check WHY!
-//            // System.out.println("I'm after the nextLine()!");
-//            if (!inputReader.hasNextInt()) {
-//                System.out.println("I'm in 1st if statement");
-//                System.out.printf(Util.INVALID_RESPONSE); // Ask for another response when invalid input
-//            } else {
-//                int intInput = inputReader.nextInt();
-//                if (intInput > suggestions.size() || intInput <= 0) {   // Invalid number is input
-//                    System.out.println("I'm in 2nd if statement");
-//                    System.out.printf(Util.INVALID_RESPONSE);
-//                } else {
-//                    return suggestions.get(intInput - 1);   // Return word at corresponding index of the array
-//                }
-//            }
             System.out.printf(">>");
 
             String input = inputReader.nextLine();
             // handle the case when input is empty
             if (input.isEmpty()) {
                 System.out.printf(Util.INVALID_RESPONSE);
-
             }
 
             try {
@@ -222,12 +204,6 @@ public class SpellChecker {
                 System.out.printf(Util.INVALID_RESPONSE);
             }
         }
-    }
-
-    public static void main(String[] args) throws FileNotFoundException {
-        SpellChecker s = new SpellChecker();
-        s.start();
-        FileInputStream input = new FileInputStream(".src/engDictionary.txt");
     }
 }
 
