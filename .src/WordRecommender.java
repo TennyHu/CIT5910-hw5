@@ -130,7 +130,7 @@ public class WordRecommender {
     Input: None
     Output: None
      */
-    public HashMap<Integer, ArrayList<String>> getStringLen() {
+    private HashMap<Integer, ArrayList<String>> getStringLen() {
         return this.stringLen;
     }
 
@@ -140,7 +140,7 @@ public class WordRecommender {
            String word2, word suggestion
     Output: double, the % of left similarity between input words
      */
-    public double getLeftSimilarity(String word1, String word2) {
+    private double getLeftSimilarity(String word1, String word2) {
         double result = 0.0;
         ArrayList<Character> list1 = new ArrayList<>();
         ArrayList<Character> list2 = new ArrayList<>();
@@ -173,7 +173,7 @@ public class WordRecommender {
            String word2, word suggestion
     Output: double, the % of right similarity between input words
      */
-    public double getRightSimilarity(String word1, String word2) {
+    private double getRightSimilarity(String word1, String word2) {
         double result = 0.0;
         ArrayList<Character> list1 = new ArrayList<>();
         ArrayList<Character> list2 = new ArrayList<>();
@@ -205,7 +205,7 @@ public class WordRecommender {
            Hashset set2
     Output: int # of characters
      */
-    public int setIntersection(HashSet<Character> set1, HashSet<Character> set2) {
+    private int setIntersection(HashSet<Character> set1, HashSet<Character> set2) {
         int result = 0;
         for (Character word : set1) {
             if (set2.contains(word)) {
@@ -221,7 +221,7 @@ public class WordRecommender {
            Hashset set2
     Output: int # of characters
     */
-    public int setUnion(HashSet<Character> set1, HashSet<Character> set2) {
+    private int setUnion(HashSet<Character> set1, HashSet<Character> set2) {
         HashSet<Character> union = new HashSet<>();
         union.addAll(set1);
         union.addAll(set2);
