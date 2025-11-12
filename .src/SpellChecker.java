@@ -149,7 +149,6 @@ public class SpellChecker {
                 if (selected.equals("t")) {
                     System.out.printf(Util.MANUAL_REPLACEMENT_PROMPT);
                     String replacement = inputReader.nextLine();
-                    //inputReader.nextLine();
                     return replacement;
 
                 } else if (selected.equals("a")) {
