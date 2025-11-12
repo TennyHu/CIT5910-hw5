@@ -128,14 +128,9 @@ public class SpellChecker {
                 String selected = inputReader.nextLine();
 
                 if (selected.equals("t")) {
-                    while (true) {
-                        System.out.printf(Util.MANUAL_REPLACEMENT_PROMPT);
-                        String replacement = inputReader.nextLine();
-//                        if (replacement.isBlank()) {        // handle the case when input is empty
-//                            continue;
-//                        }
-                        return replacement;
-                    }
+                    System.out.printf(Util.MANUAL_REPLACEMENT_PROMPT);
+                    String replacement = inputReader.nextLine();
+                    return replacement;
                 } else if (selected.equals("a")) {
                     return word;
                 } else {
@@ -153,8 +148,8 @@ public class SpellChecker {
 
                 if (selected.equals("t")) {
                     System.out.printf(Util.MANUAL_REPLACEMENT_PROMPT);
-                    String replacement = inputReader.next();
-                    inputReader.nextLine();
+                    String replacement = inputReader.nextLine();
+                    //inputReader.nextLine();
                     return replacement;
 
                 } else if (selected.equals("a")) {
